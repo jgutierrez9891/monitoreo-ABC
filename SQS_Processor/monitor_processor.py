@@ -1,16 +1,20 @@
 from random import random
 from random import randrange
-from Modelos.modelos import EstadoMicro, db
+import requests
 
 def process_message(message):
     if(mensaje_desde_micro(message)):
+        print("Se procesa mensaje desde el micro")
         id_micro = id_micro_mensaje(message)
         id_mensaje_micro = id_mensaje_micro(message)
         if(id_micro is not None and id_mensaje_micro is not None):
-            registro_estado_micro = EstadoMicro.query.filter(EstadoMicro.id_micro == id_micro, EstadoMicro.id == id_mensaje_micro).first()
-            if(registro_estado_micro is not None):
-                registro_estado_micro.estado = "OK"
-                db.session.commit()
+            api_url = "http://127.0.0.1:5000/EstadoMicro"
+            estadoMicroAct = {
+                'id_estado': id_mensaje_micro,
+                'estado': "OK"
+            }
+            response = requests.put(api_url, estadoMicroAct)
+            print("response: "+str(response))
 
 
 def mensaje_desde_micro(message):
