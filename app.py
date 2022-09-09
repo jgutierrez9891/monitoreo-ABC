@@ -8,9 +8,9 @@ from SQS_Processor.micro_processor import process_message
 import boto3
 
 sqs = boto3.resource("sqs", region_name="us-east-1",
-                            aws_access_key_id="AKIA6QD43RTCVK6T5IIY",
-                            aws_secret_access_key="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")
-queue = sqs.get_queue_by_name(QueueName="ColaMonitoreo")
+                            aws_access_key_id="",
+                            aws_secret_access_key="")
+queue = sqs.get_queue_by_name(QueueName="")
 
 def start_message_consumer():
     while(True): 

@@ -9,15 +9,25 @@ import boto3
 import time
 
 sqs = boto3.resource("sqs", region_name="us-east-1",
-                            aws_access_key_id="AKIA6QD43RTCVK6T5IIY",
-                            aws_secret_access_key="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")
-queue = sqs.get_queue_by_name(QueueName="ColaMonitoreo")
+                            aws_access_key_id="",
+                            aws_secret_access_key="")
+queue = sqs.get_queue_by_name(QueueName="")
 
 def start_message_publisher():
-    while(True):
+    contador = 0
+    while(contador < 2):
+        contador += 1
         time.sleep(30) 
         #Guarda en BD los registros de mensajes (1 solo micro)
         #Publica mensaje en la cola
+        response = queue.send_message(MessageBody = 'monitorear',
+                    MessageAttributes={
+                        'Fuente':{
+                            'StringValue': 'MONITOR',
+                            'DataType': 'String'
+                        }
+                    })
+        print(response.get('MessageId'))
         time.sleep(30)
         messages = queue.receive_messages(MessageAttributeNames=['All'])
         for message in messages:
