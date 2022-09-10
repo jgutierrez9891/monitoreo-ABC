@@ -16,9 +16,11 @@ class RecursoEstadoMicro(Resource):
         db.session.commit()
         print("Finaliza creación registro")
         return estadoMicro_schema.dump(nuevo_EstadoMicro)
-    
+
+class RecursoEstadoMicroAct(Resource):
     def put(self, id_estado):
+        print("Va a actualizar id_estado: "+str(id_estado))
         estadoMicro = EstadoMicro.query.get_or_404(id_estado)
-        estadoMicro.estado = request.json.get("estado")
+        estadoMicro.estado = "OK"
         db.session.commit()
         return estadoMicro_schema.dump(estadoMicro)
