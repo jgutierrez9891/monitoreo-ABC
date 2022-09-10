@@ -2,44 +2,43 @@ from random import random
 import boto3
 import datetime
 from random import randrange
-from modelos import db, FallaMicro
-
-sqs_report = boto3.resource("sqs", region_name="us-east-1",
-                            aws_access_key_id="",
-                            aws_secret_access_key="")
-queue_report = sqs_report.get_queue_by_name(QueueName="")
+from ..modelos import db, FallaMicro
 
 def process_message(message):
     print(f"Procesando mensaje: {message.body}")
     esMonitor = mensaje_desde_monitor(message)
+    # print("es monitor")
+    # print(str(esMonitor))
     if(esMonitor):
-        idMensaje = id_monitor(message)
-        return idMensaje
-    return 'N/A'
+        idMensaje = get_id_mensaje_micro(message)
+        print("id mensaje")
+        print(str(idMensaje))
+        return str(idMensaje)
+    else:
+        return None
 
-def id_monitor(message):
+
+def get_id_mensaje_micro(message):
     atributos = message.message_attributes
+    retorno = None
     for atributo in atributos:
-        if(atributo == "ID_Message"):
+        if(atributo == "ID_Mensaje"):
             elementos = atributos[atributo].items()
             for elemento in elementos:
-                print(elemento[0])
-                print(elemento[1])
                 if(elemento[0] == "StringValue"):
-                    return elemento[1]
-    return False
+                    retorno = int(elemento[1])
+    return retorno
 
 def mensaje_desde_monitor(message):
     atributos = message.message_attributes
+    retorno = False
     for atributo in atributos:
         if(atributo == "Fuente"):
             elementos = atributos[atributo].items()
             for elemento in elementos:
-                print(elemento[0])
-                print(elemento[1])
-                if(elemento[0] == "StringValue" and elemento[1] == "MONITOR"):
-                    return True
-    return False
+                if(elemento[0] == "StringValue" and ("MONITOR" in elemento[1])):
+                    retorno = True
+    return retorno
 
 def validar_servicio():
     ## Si es par falla
@@ -53,18 +52,3 @@ def validar_servicio():
         return "ERROR"
     else:
         return "OK"
-
-def message_to_queue(ID):
-    print(f"Enviando mensaje CON ID: {ID}")
-    response = queue_report.send_message(MessageBody = 'monitorear',
-                    message_attributes={
-                        'Fuente': {
-                            'DataType': 'String',
-                            'StringValue': 'MICRO-1'
-                        },
-                        'ID_Message': {
-                            'DataType': 'String',
-                            'StringValue': str(ID)
-                        }
-                    })
-    print(response.get('MessageId'))
