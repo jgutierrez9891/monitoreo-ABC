@@ -18,7 +18,17 @@ class ReglaMonitoreo(db.Model):
         return "{}-{}-{}-{}-{}-{}".format(self.nombreUbicacion, self.numerosTelefonoArray, self.notificarPropietario, self.notificarPolicia, self.notificarBomberos, self.notificarPrimerosAuxilios)
 
 
+class FallaMicro(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    fecha = db.Column(db.DateTime)
+    idMensaje = db.Column(db.String(5))
+    status = db.Column(db.String(10))
+
+    def __repr__(self):
+        return "{}-{}-{}".format(self.fecha, self.status, self.idMensaje)
+
 class ReglaMonitoreoSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = ReglaMonitoreo
         load_instance = True
+

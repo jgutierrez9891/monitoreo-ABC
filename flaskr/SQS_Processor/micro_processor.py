@@ -11,12 +11,23 @@ queue_report = sqs_report.get_queue_by_name(QueueName="")
 
 def process_message(message):
     print(f"Procesando mensaje: {message.body}")
-    if(mensaje_desde_monitor(message)):
-        estado_servicio = validar_servicio()
-        if(estado_servicio == "OK"):
-            print("Se envía mensaje de estado")
-            message_to_queue(estado_servicio)
-    pass
+    esMonitor = mensaje_desde_monitor(message)
+    if(esMonitor):
+        idMensaje = id_monitor(message)
+        return idMensaje
+    return 'N/A'
+
+def id_monitor(message):
+    atributos = message.message_attributes
+    for atributo in atributos:
+        if(atributo == "ID_Message"):
+            elementos = atributos[atributo].items()
+            for elemento in elementos:
+                print(elemento[0])
+                print(elemento[1])
+                if(elemento[0] == "StringValue"):
+                    return elemento[1]
+    return False
 
 def mensaje_desde_monitor(message):
     atributos = message.message_attributes
@@ -43,13 +54,17 @@ def validar_servicio():
     else:
         return "OK"
 
-def message_to_queue(message):
-    print(f"Enviando mensaje: {message}")
+def message_to_queue(ID):
+    print(f"Enviando mensaje CON ID: {ID}")
     response = queue_report.send_message(MessageBody = 'monitorear',
-                    MessageAttributes={
-                        'Fuente':{
-                            'StringValue': 'MICRO',
-                            'DataType': 'String'
+                    message_attributes={
+                        'Fuente': {
+                            'DataType': 'String',
+                            'StringValue': 'MICRO-1'
+                        },
+                        'ID_Message': {
+                            'DataType': 'String',
+                            'StringValue': str(ID)
                         }
                     })
     print(response.get('MessageId'))
