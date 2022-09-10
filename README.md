@@ -12,6 +12,7 @@ pip install flask
 pip install flask_sqlalchemy
 pip install marshmallow-sqlalchemy
 pip install flask_restful
+pip install boto3
 
 pip install -r requirements.txt
 
