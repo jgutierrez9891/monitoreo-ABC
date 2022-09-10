@@ -21,8 +21,8 @@ def start_message_consumer():
         messages = queue.receive_messages(MessageAttributeNames=['All'])
         for message in messages:
             idMensaje = process_message(message)
+            print("id mensaje = "+idMensaje+ " fecha = "+ str(datetime.datetime.now))
             generate_response(idMensaje)
-            #send response more similar to start_monitoreo
             message.delete()
 
 
@@ -48,6 +48,7 @@ def generate_response(idmensaje):
     else:
         estatus = 'NOT OK'
 
+    print('status: '+ estatus)
     if(estatus == 'OK'):
         message_attributes={
                 'Fuente': {
@@ -59,7 +60,7 @@ def generate_response(idmensaje):
                     'StringValue': idmensaje
                 }
             }
-        send_message_to_queue("Reportar estado de salud", message_attributes)
+        send_message_to_queue("OK", message_attributes)
     else:  
         nueva_falla_servicio = FallaMicro(
                 fecha = datetime.datetime.now,

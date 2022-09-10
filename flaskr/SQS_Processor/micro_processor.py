@@ -2,7 +2,7 @@ from random import random
 import boto3
 import datetime
 from random import randrange
-from Modelos.modelos import db, FallaMicro
+from modelos import db, FallaMicro
 
 sqs_report = boto3.resource("sqs", region_name="us-east-1",
                             aws_access_key_id="",
