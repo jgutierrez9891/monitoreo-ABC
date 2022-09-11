@@ -9,6 +9,8 @@ from flask import Flask
 from threading import Thread
 from flask_cors import CORS
 from random import randrange
+from .API.controller import RecursoEstado
+import requests
 
 sqs = boto3.resource("sqs", region_name="us-east-1",
                             aws_access_key_id="AKIA6QD43RTC4JQPPCJK",
@@ -46,10 +48,10 @@ def send_message_to_queue(message, message_attributes):
 def generate_response(idmensaje):
 
     estatus =''
-    if(True):
-        estatus = 'OK'
-    else:
+    if( randrange(10) % 5 ==0 ):
         estatus = 'NOT OK'
+    else:
+        estatus = 'OK'
 
     print('status: '+ estatus)
     if(estatus == 'OK'):
@@ -65,13 +67,12 @@ def generate_response(idmensaje):
             }
         send_message_to_queue("OK", message_attributes)
     else:  
-        nueva_falla_servicio = FallaMicro(
-                fecha = datetime.datetime.now,
-                status = estatus,
-                idMensaje = idmensaje
-            )
-        db.session.add(nueva_falla_servicio)
-        db.session.commit()
+        api_url = "http://127.0.0.1:5000/Falla/"+str(idmensaje)
+        print('api_url')
+        print(api_url)
+        response = requests.get(api_url)
+        print("response: "+str(response))
+
 
 app = Flask(__name__)
 t = Thread(target=start_message_consumer)
@@ -90,4 +91,4 @@ db.create_all()
 cors = CORS(app)
 
 api = Api(app)
-api.add_resource(VistaReglaMonitoreo, '/reglasmonitoreo')
+api.add_resource(RecursoEstado, '/Falla/<int:id_estado>')

@@ -3,6 +3,7 @@ import boto3
 import datetime
 from random import randrange
 from ..modelos import db, FallaMicro
+import requests
 
 def process_message(message):
     print(f"Procesando mensaje: {message.body}")
@@ -40,15 +41,3 @@ def mensaje_desde_monitor(message):
                     retorno = True
     return retorno
 
-def validar_servicio():
-    ## Si es par falla
-    print("Generar falla aleatoria en el microservicio")
-    if(randrange(10)%2 == 0):
-        nueva_falla_servicio = FallaMicro(
-            fecha = datetime.datetime.now
-        )
-        db.session.add(nueva_falla_servicio)
-        db.session.commit()
-        return "ERROR"
-    else:
-        return "OK"
