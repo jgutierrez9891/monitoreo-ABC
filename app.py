@@ -14,7 +14,7 @@ def send_message_to_queue(message, message_attributes):
     print("Atributos: "+str(message_attributes))
     sqs_client = boto3.client("sqs", region_name="us-east-1", aws_access_key_id="", aws_secret_access_key= "")
     response = sqs_client.send_message(
-        QueueUrl="https://sqs.us-east-1.amazonaws.com/996694265029/ColaMonitoreo",
+        QueueUrl="https://sqs.us-east-1.amazonaws.com/495461244804/ColaMonitoreo",
         MessageBody = message,
         MessageAttributes = message_attributes
     )
@@ -24,7 +24,7 @@ def receive_messages_from_queue():
     print("Recibir mensajes de la cola")
 
     sqs = boto3.resource("sqs", region_name="us-east-1", aws_access_key_id="", aws_secret_access_key= "")
-    queue = sqs.get_queue_by_name(QueueName="ColaMonitoreo")
+    queue = sqs.get_queue_by_name(QueueName="ColaRespuestasMonitoreo")
     messages = queue.receive_messages(MessageAttributeNames=['All'], MaxNumberOfMessages=10)
 
     return messages
@@ -36,7 +36,7 @@ def crear_registro_EstadoMicro():
 
 def start_monitoreo():
     contador = 0
-    while(contador < 5):
+    while(contador < 60):
         contador += 1
         time.sleep(15) 
         nuevo_EstadoMicro = crear_registro_EstadoMicro()

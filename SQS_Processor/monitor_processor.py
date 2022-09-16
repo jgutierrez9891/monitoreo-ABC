@@ -3,7 +3,7 @@ from random import randrange
 import requests
 
 def process_message(message):
-    print("Va a evaluar el mensaje")
+    print("Va a evaluar el mensaje: "+str(message))
     if(mensaje_desde_micro(message)):
         print("Se procesa mensaje desde el micro")
         id_micro = get_id_micro_mensaje(message)
