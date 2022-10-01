@@ -1,0 +1,114 @@
+{
+	"info": {
+		"_postman_id": "122aff78-93f2-4f01-b9f5-3f2ea8a458ca",
+		"name": "MonitoreoABC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22934268"
+	},
+	"item": [
+		{
+			"name": "testUrl",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"100 Executions \", async function () {\r",
+							"    console.log(\"EXECUTE # 1\")\r",
+							"    let counter = 1;\r",
+							"    const requestObject = {\r",
+							"            //url: 'https://pdag-grupo-4-back.herokuapp.com/login',\r",
+							"            url : 'http://127.0.0.1:8000/login',\r",
+							"            method: 'POST',\r",
+							"            header: {\r",
+							"                    'Accept': '*/*',\r",
+							"                    'Content-Type': 'application/json'\r",
+							"                },\r",
+							"            body: {\r",
+							"            mode: 'raw',\r",
+							"                raw: JSON.stringify({ \"username\": \"test\", \"password\": \"test\" })\r",
+							"            }\r",
+							"        }\r",
+							"    pm.sendRequest(requestObject, (err, res) => {\r",
+							"            while(counter<100){\r",
+							"                console.log(\"EXECUTE # \"+(counter+1))\r",
+							"                if(counter%2==0){\r",
+							"                    const requestObject2 = {\r",
+							"                            //url: 'https://pdag-grupo-4-back.herokuapp.com/login',\r",
+							"                            url: 'http://127.0.0.1:8000/getRule',\r",
+							"                            method: 'POST',\r",
+							"                            header: {\r",
+							"                                    'Accept': '*/*',\r",
+							"                                    'Content-Type': 'application/json',\r",
+							"                                    'Authorization': 'Bearer ' + res.json().access_token\r",
+							"                                },\r",
+							"                            body: {\r",
+							"                            mode: 'raw',\r",
+							"                                raw: JSON.stringify({ \"usuario\": \"admin\", \"contrasena\": \"admin\", \"idMensaje\":counter, })\r",
+							"                            }\r",
+							"                        }\r",
+							"                    pm.sendRequest(requestObject2, (err, res2) => {\r",
+							"                        console.log(res2)\r",
+							"                    })\r",
+							"                }else{\r",
+							"                    const requestObject2 = {\r",
+							"                            url: 'http://127.0.0.1:8000/getRule',\r",
+							"                            method: 'POST',\r",
+							"                            header: {\r",
+							"                                    'Accept': '*/*',\r",
+							"                                    'Content-Type': 'application/json',\r",
+							"                                    'Authorization': \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY2NDU5MDAxNiwianRpIjoiYzg0ZDU2YzUtOTkyYS00YTZmLTg4N2UtNzA1ZWQ3ZGI1ZjRkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3QiLCJuYmYiOjE2NjQ1OTAwMTYsImV4cCI6MTY2NDU5MDkxNn0.jiwho_0nBF---GSMcxLrbuw5HTC5jKRGwW3i7cFgN6A\"\r",
+							"                                },\r",
+							"                            body: {\r",
+							"                            mode: 'raw',\r",
+							"                                raw: JSON.stringify({ \"usuario\": \"admin\", \"contrasena\": \"admin\",\r",
+							"                                \"idMensaje\":counter, })\r",
+							"                            }\r",
+							"                        }\r",
+							"                    pm.sendRequest(requestObject2, (err, res3) => {\r",
+							"                        console.log(res3)\r",
+							"                    })\r",
+							"                }\r",
+							"                \r",
+							"                counter = counter + 1;\r",
+							"            }\r",
+							"        });\r",
+							"    \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"usuario\": \"admin\", \"contrasena\": \"admin\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
