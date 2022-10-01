@@ -1,5 +1,6 @@
 from flaskr.vistas.vistas import VistaMicroAccedidoSchema
 from .modelos import db, ReglaMonitoreo
+from flask_jwt_extended import JWTManager
 import datetime
 from flaskr import create_app
 from flask_restful import Api
@@ -26,3 +27,5 @@ db.create_all()
 
 api = Api(app)
 api.add_resource(VistaMicroAccedidoSchema, '/micro')
+
+jwt = JWTManager(app)
