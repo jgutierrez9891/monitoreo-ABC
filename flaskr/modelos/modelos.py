@@ -21,7 +21,7 @@ class ReglaMonitoreo(db.Model):
 class MicroAccedido(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     fecha = db.Column(db.DateTime)
-    idMensaje = db.Column(db.String(5))
+    idMensaje = db.Column(db.Integer)
 
 
 class MicroAccedidoSchema(SQLAlchemyAutoSchema):

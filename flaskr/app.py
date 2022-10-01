@@ -4,12 +4,10 @@ from flask_jwt_extended import JWTManager
 import datetime
 from flaskr import create_app
 from flask_restful import Api
-import boto3
 from flask import Flask
 from threading import Thread
 from flask_cors import CORS
 from random import randrange
-import requests
 
 app = create_app('default')
 

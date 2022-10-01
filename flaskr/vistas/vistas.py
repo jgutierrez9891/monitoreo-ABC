@@ -1,8 +1,8 @@
 import datetime
 from datetime import date
 from flask_restful import Resource
-from ..modelos import db, ReglaMonitoreo, MicroAccedido, MicroAccedidoSchema
-from flask_jwt_extended import create_access_token, jwt_required
+from ..modelos import db, MicroAccedido, MicroAccedidoSchema
+from flask_jwt_extended import jwt_required
 from flask import request
 
 
